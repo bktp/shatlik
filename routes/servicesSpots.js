@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-let db = require('../db')
+const db = require('../db')
 
-let isAuth = require('../auth')
+const auth = require('../auth')
 
 router.get('/', (req, res) => {
     db.one('SELECT * FROM spots')
@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 });
 
 router.use((req, res, next) => {
-    isAuth(req.cookies.password) ? next() : res.send()
+    auth.isAuth(req.cookies.password) ? next() : res.send()
 })
 
 router.put('/', (req, res) => {
