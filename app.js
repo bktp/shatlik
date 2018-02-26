@@ -11,8 +11,6 @@ var servicesSpots = require('./routes/servicesSpots');
 
 var app = express();
 
-let crypto = require('crypto')
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
