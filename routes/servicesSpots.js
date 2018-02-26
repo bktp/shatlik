@@ -21,7 +21,7 @@ router.use((req, res, next) => {
 
 router.put('/', (req, res) => {
     console.log(req.body)
-    db.query('UPDATE spots SET business=${business}, stac=${stac}, semistac=${semistac}, updated=${updated}', req.body)
+    db.query("UPDATE spots SET business=${business}, stac=${stac}, semistac=${semistac}, updated=TO_DATE(${updated}, 'DD.MM.YYYY')", req.body)
     .then(() => {
         res.send("Success")
     })
