@@ -22,9 +22,6 @@ router.use((req, res, next) => {
         console.log("Проверка пройдена")
         next()
     }
-    else {
-        res.send()
-    }
 })
 
 router.put('/', (req, res) => {
