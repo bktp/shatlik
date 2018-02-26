@@ -3,6 +3,7 @@ const router = express.Router()
 const auth = require('../auth')
 
 router.get('/', (req,res) => {
+    console.dir(req.cookies)
     if (req.cookies.password) res.json({auth: auth.isAuth(req.cookies.password)})
     else res.json({auth: false})
 })
