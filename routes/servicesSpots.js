@@ -1,8 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const pgp = require('pg-promise')()
-const db = pgp(process.env.DATABASE_URL + '?ssl=true')
+let db = require('../db')
 
 
 router.get('/', (req, res) => {
@@ -16,7 +15,6 @@ router.get('/', (req, res) => {
 });
 
 router.put('/', (req, res) => {
-    const currentDate = new Date()
     console.log(req.body)
     db.query('UPDATE spots SET business=${business}, stac=${stac}, semistac=${semistac}, updated=${updated}', req.body)
     .then(() => {

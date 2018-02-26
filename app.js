@@ -11,6 +11,8 @@ var servicesSpots = require('./routes/servicesSpots');
 
 var app = express();
 
+let crypto = require('crypto')
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -26,7 +28,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', 'http://shatlik.ru');
+  res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
@@ -36,6 +39,21 @@ app.use((req, res, next) => {
   } else {
     next();
   }
+})
+
+app.use((req, res, next) => {
+
+  if (crypto.createHash('sha256').update(req.cookies.password).digest('base64') != 'wSvJgmeUZCyX1WrVSIykOjbuBp3rf72B/eJt32LyLSQ=') {
+    res.setHeader(401)
+    res.send()
+  } else {
+    next()
+  }
+})
+
+app.use((req, res, next) => {
+  res.setHeader('Content-Type', 'application/json')
+  next()
 })
 
 app.use('/', index);
