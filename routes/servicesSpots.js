@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 
 router.use((req, res, next) => {
     console.log("Проверка пароля началась")
-    console.log(req.cookies.password)
+    console.dir(req.cookies)
     if (auth.isAuth(req.cookies.password)) 
     {
         console.log("Проверка пройдена")
