@@ -9,3 +9,5 @@ router.post('/', (req,res) => {
         res.json({error: "Something went wrong"})
     }
 })
+
+module.exports = router
