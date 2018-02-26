@@ -3,6 +3,7 @@ var router = express.Router();
 
 let db = require('../db')
 
+let isAuth = require('../auth')
 
 router.get('/', (req, res) => {
     db.one('SELECT * FROM spots')
@@ -13,6 +14,10 @@ router.get('/', (req, res) => {
         res.send(JSON.stringify({error: err.message}))
     })
 });
+
+router.use((req, res, next) => {
+    isAuth(req.cookies.password) ? next() : res.send()
+})
 
 router.put('/', (req, res) => {
     console.log(req.body)

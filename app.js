@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://shatlik.ru');
+  // res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
@@ -38,16 +39,6 @@ app.use((req, res, next) => {
     res.send(200);
   } else {
     next();
-  }
-})
-
-app.use((req, res, next) => {
-
-  if (crypto.createHash('sha256').update(req.cookies.password).digest('base64') != 'wSvJgmeUZCyX1WrVSIykOjbuBp3rf72B/eJt32LyLSQ=') {
-    res.setHeader(401)
-    res.send()
-  } else {
-    next()
   }
 })
 
