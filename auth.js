@@ -3,7 +3,9 @@ const crypto = require('crypto')
 
 const auth = {
     isAuth(password) {
-        return ((crypto.createHash('sha256').update(password).digest('base64') == 'wSvJgmeUZCyX1WrVSIykOjbuBp3rf72B/eJt32LyLSQ=') ? true : false)
+        let hash = crypto.createHash('sha256').update(password).digest('base64')
+        if (hash == 'wSvJgmeUZCyX1WrVSIykOjbuBp3rf72B/eJt32LyLSQ=') return true
+        else return false
     }
 }
 

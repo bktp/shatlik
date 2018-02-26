@@ -16,7 +16,15 @@ router.get('/', (req, res) => {
 });
 
 router.use((req, res, next) => {
-    auth.isAuth(req.cookies.password) ? next() : res.send()
+    console.log("Проверка пароля началась")
+    if (auth.isAuth(req.cookies.password)) 
+    {
+        console.log("Проверка пройдена")
+        next()
+    }
+    else {
+        res.send()
+    }
 })
 
 router.put('/', (req, res) => {
