@@ -38,7 +38,10 @@ router.post('/', (req, res) => {
                 return t.batch([q1, q2, q3])
             })
         })
-        .then(() => res.send())
+        .then(() => {
+            console.log("DONE")
+            res.send("SUCCESS")
+        })
         .catch(err => res.json({
             error: err.message
         }))
