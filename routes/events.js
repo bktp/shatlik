@@ -21,34 +21,27 @@ router.get('/', (req, res) => {
         })
 })
 
-// router.get('/lastid', (req, res) => {
-//     db.one('SELECT if FROM events ORDER BY id DESC LIMIT 1'.then(id => {
-//         res.json({id:id})
-//     })).catch(err => {
-//         res.json({error:err.message})
-//     })
-// })
-
 router.post('/', (req, res) => {
     let insertID
-    db.one('SELECT id FROM events ORDER BY id DESC LIMIT 1').then(id => {
-        insertID = id + 1
-        console.log(`>>> InsertID: ${insertID}/${id}`)
-    }).catch(err => res.json({
-        error: err.message
-    }))
-    db.tx(t => {
-            const q1 = t.none('INSERT INTO events(id, title, main_image, small_text, date) VALUES($1, ${title}, ${main_image}, ${small_text}, ${date})', insertID, req.body)
-            const q2 = req.body.images.map(image => {
-                return t.none('INSERT INTO event_images VALUES($1, ${level}, ${image})', insertID, image)
-            })
-            const q3 = req.body.blocks.map(block => {
-                return t.none('INSERT INTO event_blocks VALUES($1, ${level}, ${text})', insertID, block)
-            })
-            return t.batch([q1, q2, q3])
-        })
-        .then(data => res.json(data))
-        .catch(err => res.json({
+    db.one('SELECT id FROM events ORDER BY id DESC LIMIT 1')
+        .then(id => {
+            insertID = id + 1
+            console.log(`>>> InsertID: ${insertID}/${id}`)
+            db.tx(t => {
+                    const q1 = t.none('INSERT INTO events(id, title, main_image, small_text, date) VALUES($1, ${title}, ${main_image}, ${small_text}, ${date})', insertID, req.body)
+                    const q2 = req.body.images.map(image => {
+                        return t.none('INSERT INTO event_images VALUES($1, ${level}, ${image})', insertID, image)
+                    })
+                    const q3 = req.body.blocks.map(block => {
+                        return t.none('INSERT INTO event_blocks VALUES($1, ${level}, ${text})', insertID, block)
+                    })
+                    return t.batch([q1, q2, q3])
+                })
+                .then(data => res.json(data))
+                .catch(err => res.json({
+                    error: err.message
+                }))
+        }).catch(err => res.json({
             error: err.message
         }))
 })
