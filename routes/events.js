@@ -37,7 +37,7 @@ router.post('/', (req, res) => {
                     })
                     return t.batch([q1, q2, q3])
                 })
-                .then(data => res.json(data))
+                .then(() => res.send())
                 .catch(err => res.json({
                     error: err.message
                 }))
