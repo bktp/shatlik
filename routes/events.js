@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     let insertID
-    db.one('SELECT id FROM events ORDER BY id DESC LIMIT 1').then(id => insertID = id).catch(err => res.json({
+    db.one('SELECT id FROM events ORDER BY id DESC LIMIT 1').then(id => insertID = id + 1).catch(err => res.json({
         error: err.message
     }))
     console.log(`>>> InsertID: ${insertID}`)
