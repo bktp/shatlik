@@ -34,8 +34,9 @@ router.post('/', (req, res) => {
     db.one('SELECT id FROM event ORDER BY id DESC LIMIT 1').then(id => insertID = id).catch(err => res.json({
         error: err.message
     }))
+    console.log(`>>> InsertID: ${insertID}`)
     db.tx(t => {
-            const q1 = t.one('INSERT INTO events(id, title, main_image, small_text, date) VALUES($1, ${title}, ${main_image}, ${small_text}, ${date})', insertID, req.body)
+            const q1 = t.none('INSERT INTO events(id, title, main_image, small_text, date) VALUES($1, ${title}, ${main_image}, ${small_text}, ${date})', insertID, req.body)
             const q2 = req.body.images.map(image => {
                 return t.none('INSERT INTO event_images VALUES($1, ${level}, ${image})', insertID, image)
             })
