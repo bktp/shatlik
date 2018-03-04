@@ -28,6 +28,7 @@ router.post('/', (req, res) => {
             console.dir(id)
             insertID = id.id + 1
             return db.tx(t => {
+                console.dir(req.body)
                 const q1 = t.none('INSERT INTO events(id, title, main_image, small_text, date) VALUES($1, ${title}, ${main_image}, ${small_text}, ${date})', insertID, req.body)
                 const q2 = req.body.images.map(image => {
                     return t.none('INSERT INTO event_images VALUES($1, ${level}, ${image})', insertID, image)
