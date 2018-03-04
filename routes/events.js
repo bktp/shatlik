@@ -31,10 +31,12 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     let insertID
-    db.one('SELECT id FROM events ORDER BY id DESC LIMIT 1').then(id => insertID = id + 1).catch(err => res.json({
+    db.one('SELECT id FROM events ORDER BY id DESC LIMIT 1').then(id => {
+        insertID = id + 1
+        console.log(`>>> InsertID: ${insertID}/${id}`)
+    }).catch(err => res.json({
         error: err.message
     }))
-    console.log(`>>> InsertID: ${insertID}`)
     db.tx(t => {
             const q1 = t.none('INSERT INTO events(id, title, main_image, small_text, date) VALUES($1, ${title}, ${main_image}, ${small_text}, ${date})', insertID, req.body)
             const q2 = req.body.images.map(image => {
@@ -69,6 +71,7 @@ router.get('/:id', (req, res) => {
                     res.header()
                     res.send(JSON.stringify(result))
                 })
+                .catch()
         })
         .catch((err) => {
             res.send(JSON.stringify({
@@ -84,7 +87,7 @@ router.put('/:id', (req, res) => {
             const q3 = req.body.images.map(image => {
                 return t.none('INSERT INTO event_images VALUES($1, ${level}, ${image})', req.params.id, image)
             })
-            const q4 = db.quer('DELETE FROM event_blocks WHERE id=$1', req.params.id)
+            const q4 = db.query('DELETE FROM event_blocks WHERE id=$1', req.params.id)
             const q5 = req.body.blocks.map(block => {
                 return t.none('INSERT INTO event_blocks VALUES($1, ${level}, ${text})', req.params.id, block)
             })
