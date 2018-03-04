@@ -16,16 +16,25 @@ router.get('/', (req, res) => {
     })
 })
 
+// router.get('/lastid', (req, res) => {
+//     db.one('SELECT if FROM events ORDER BY id DESC LIMIT 1'.then(id => {
+//         res.json({id:id})
+//     })).catch(err => {
+//         res.json({error:err.message})
+//     })
+// })
+
 router.post('/', (req, res) => {
     db.tx(t => {
-        const q1 = db.query('INSERT INTO events(title, main_image, small_text, date) VALUES(${title}, ${main_image}, ${small_text}, ${date})', req.body)
+        let insertID
+        const q1 = t.one('INSERT INTO events(title, main_image, small_text, date) VALUES(${title}, ${main_image}, ${small_text}, ${date}) RETURNING id', req.body).then(id => insertId = id)
         const q2 = req.body.images.map(image => {
-            return t.none('INSERT INTO event_images VALUES($1, ${level}, ${image})', req.body.id, image)
+            return t.none('INSERT INTO event_images VALUES($1, ${level}, ${image})', insertID, image)
         })
         const q3 = req.body.blocks.map(block => {
-            return t.none('INSERT INTO event_blocks VALUES($1, ${level}, ${text})', req.body.id, block)
+            return t.none('INSERT INTO event_blocks VALUES($1, ${level}, ${text})', insertID, block)
         })
-        t.batch(q1, q2, q3)
+        return t.batch([q1, q2, q3])
     })
     .then(data => res.json(data))
     .catch(err => res.json({err:err.message}))
@@ -64,7 +73,7 @@ router.put('/:id', (req, res) => {
         const q5 = req.body.blocks.map(block => {
             return t.none('INSERT INTO event_blocks VALUES($1, ${level}, ${text})', req.params.id, block)
         })
-        t.batch(q1, q2, q3)
+        return t.batch([q1, q2, q3, q4, q5])
     })
     .then(data => res.json(data))
     .catch(err => res.json({err:err.message}))
