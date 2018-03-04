@@ -71,7 +71,9 @@ router.get('/:id', (req, res) => {
                     res.header()
                     res.send(JSON.stringify(result))
                 })
-                .catch()
+                .catch(err => res.json({
+                    error: err.message
+                }))
         })
         .catch((err) => {
             res.send(JSON.stringify({
