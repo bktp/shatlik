@@ -25,8 +25,8 @@ router.post('/', (req, res) => {
     let insertID
     db.one('SELECT id FROM events ORDER BY id DESC LIMIT 1')
         .then(id => {
-            insertID = id + 1
-            console.log(`>>> InsertID: ${insertID}/${id}`)
+            console.dir(id)
+            insertID = id.id + 1
             db.tx(t => {
                     const q1 = t.none('INSERT INTO events(id, title, main_image, small_text, date) VALUES($1, ${title}, ${main_image}, ${small_text}, ${date})', insertID, req.body)
                     const q2 = req.body.images.map(image => {
