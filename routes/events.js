@@ -27,21 +27,19 @@ router.post('/', (req, res) => {
         .then(id => {
             console.dir(id)
             insertID = id.id + 1
-            db.tx(t => {
-                    const q1 = t.none('INSERT INTO events(id, title, main_image, small_text, date) VALUES($1, ${title}, ${main_image}, ${small_text}, ${date})', insertID, req.body)
-                    const q2 = req.body.images.map(image => {
-                        return t.none('INSERT INTO event_images VALUES($1, ${level}, ${image})', insertID, image)
-                    })
-                    const q3 = req.body.blocks.map(block => {
-                        return t.none('INSERT INTO event_blocks VALUES($1, ${level}, ${text})', insertID, block)
-                    })
-                    return t.batch([q1, q2, q3])
+            return db.tx(t => {
+                const q1 = t.none('INSERT INTO events(id, title, main_image, small_text, date) VALUES($1, ${title}, ${main_image}, ${small_text}, ${date})', insertID, req.body)
+                const q2 = req.body.images.map(image => {
+                    return t.none('INSERT INTO event_images VALUES($1, ${level}, ${image})', insertID, image)
                 })
-                .then(() => res.send())
-                .catch(err => res.json({
-                    error: err.message
-                }))
-        }).catch(err => res.json({
+                const q3 = req.body.blocks.map(block => {
+                    return t.none('INSERT INTO event_blocks VALUES($1, ${level}, ${text})', insertID, block)
+                })
+                return t.batch([q1, q2, q3])
+            })
+        })
+        .then(() => res.send())
+        .catch(err => res.json({
             error: err.message
         }))
 })
