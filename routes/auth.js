@@ -9,7 +9,7 @@ router.get('/', (req,res) => {
 
 router.post('/', (req,res) => {
     if (auth.isAuth(req.body.password)) {
-        res.cookie('password', req.body.password, {maxAge: 10000000})
+        res.cookie('password', req.body.password, {maxAge: 10000000, sameSite: 'none'})
         res.send()
     } else {
         res.json({error: "Something went wrong"})
