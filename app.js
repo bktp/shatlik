@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
 var index = require('./routes/index');
 var auth = require('./routes/auth')
@@ -11,6 +12,13 @@ var events = require('./routes/events');
 var servicesSpots = require('./routes/servicesSpots');
 
 var app = express();
+
+var corsOptions = {
+  origin: 'http://shatlik.ru',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
