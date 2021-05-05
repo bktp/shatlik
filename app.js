@@ -14,7 +14,7 @@ var servicesSpots = require('./routes/servicesSpots');
 var app = express();
 
 var corsOptions = {
-  origin: 'http://shatlik.ru',
+  origin: 'https://shatlik.ru',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
