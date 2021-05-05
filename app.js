@@ -27,9 +27,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-//   const allowedOrigin = process.env.ALLOWEDORIGIN || 'https://shatlik.ru shatlik.ru'
-//   res.header('Access-Control-Allow-Origin', allowedOrigin);
-  res.header('Access-Control-Allow-Origin', '*');
+  const allowedOrigin = process.env.ALLOWEDORIGIN || 'https://shatlik.ru shatlik.ru'
+  res.header('Access-Control-Allow-Origin', allowedOrigin);
+//   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
