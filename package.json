@@ -13,7 +13,8 @@
     "jade": "~1.11.0",
     "morgan": "^1.9.1",
     "pg-promise": "^7.5.4",
-    "serve-favicon": "~2.4.5"
+    "serve-favicon": "~2.4.5",
+    "cors": "2.8.5"
   },
   "devDependencies": {
     "nodemon": "^1.18.11"
